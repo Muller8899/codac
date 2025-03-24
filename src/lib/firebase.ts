@@ -5,12 +5,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBsjU_y3C_VMu8ECJ8ZbkcSF5FbDbbcz2k",
-  authDomain: "codashop-clone.firebaseapp.com",
-  projectId: "codashop-clone",
-  storageBucket: "codashop-clone.appspot.com",
-  messagingSenderId: "845621634512",
-  appId: "1:845621634512:web:df234a0e2d32b5af1234ab"
+  authDomain: "codab-82c80.firebaseapp.com",
+  projectId: "codab-82c80",
+  storageBucket: "codab-82c80.firebasestorage.app",
+  messagingSenderId: "807016501235",
+  appId: "1:807016501235:web:dae5b8072eb1faa6880c86",
+  measurementId: "G-SXYZW3G2RD"
 };
 
 // Initialize Firebase
