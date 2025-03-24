@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 292 73% 12%;  /* Deep purple #2d0535 */
+    --foreground: 0 0% 100%;
+    --card: 292 73% 12%;
+    --card-foreground: 0 0% 100%;
+    --popover: 292 73% 12%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 255 83% 61%;     /* Main purple/blue #6646ef */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 287 34% 30%;   /* Lighter purple #574562 */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 287 34% 30%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 60 65% 80%;       /* Yellow-green accent */
+    --accent-foreground: 292 73% 12%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 287 23% 50%;
+    --input: 287 23% 50%;
+    --ring: 255 83% 61%;
+    --radius: 0.5rem;
+  }
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('https://ext.same-assets.com/9712562/3635182100.bin') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('https://ext.same-assets.com/9712562/3592490665.false') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', 'Noto Sans', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+}
+
+@layer components {
+  .game-card {
+    @apply relative overflow-hidden rounded-lg transition-all hover:scale-105;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .section-title {
+    @apply mb-4 text-2xl font-bold uppercase tracking-wider;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}

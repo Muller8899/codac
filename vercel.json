@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "buildCommand": "bun run build",
+  "installCommand": "bun install",
+  "framework": "nextjs",
+  "images": {
+    "sizes": [16, 32, 64, 96, 128, 256, 384, 512, 768, 1024, 1536, 2048],
+    "domains": [
+      "ext.same-assets.com",
+      "cdn1.codashop.com",
+      "placehold.co"
+    ],
+    "remotePatterns": [
+      {
+        "protocol": "https",
+        "hostname": "ext.same-assets.com"
+      },
+      {
+        "protocol": "https",
+        "hostname": "cdn1.codashop.com"
+      },
+      {
+        "protocol": "https",
+        "hostname": "placehold.co"
+      }
+    ]
+  }
+}
