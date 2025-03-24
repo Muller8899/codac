@@ -4,12 +4,25 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useAuth } from "@/contexts/AuthContext";
+import LoginModal from "@/components/LoginModal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 export default function Header() {
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // Get auth state from context
+  const { currentUser, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,6 +36,16 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Successfully logged out!");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to log out. Please try again.");
+    }
+  };
 
   const menuItems = [
     { label: "首頁", href: "/" },
@@ -89,52 +112,41 @@ export default function Header() {
             </span>
           </div>
 
-          <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="h-8 rounded-full border-primary/70 text-white hover:bg-primary/20 md:block hidden">
-                登入
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-background sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle className="text-center text-lg">Sign up to Codashop today!</DialogTitle>
-              </DialogHeader>
-              <div className="flex flex-col space-y-4 p-4">
-                <p className="text-center text-sm text-muted-foreground">
-                  Earn Rewards to get discounts for your purchases and be the first to learn about exclusive promotions on Codashop!
-                </p>
-                <Button variant="outline" className="w-full justify-start gap-2">
-                  <Image
-                    src="https://ext.same-assets.com/3124609550/3166402939.svg"
-                    alt="Google"
-                    width={20}
-                    height={20}
-                  />
-                  <span>繼續使用谷歌</span>
+          {/* Authentication UI */}
+          {currentUser ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="h-8 rounded-full border-primary/70 text-white hover:bg-primary/20">
+                  {currentUser.displayName?.split(' ')[0] || 'User'}
                 </Button>
-                <Button variant="outline" className="w-full justify-start gap-2">
-                  <Image
-                    src="https://ext.same-assets.com/3124609550/3166402939.svg"
-                    alt="Facebook"
-                    width={20}
-                    height={20}
-                  />
-                  <span>使用Facebook登入</span>
-                </Button>
-                <div className="relative my-2">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-muted"></span>
-                  </div>
-                  <div className="relative flex justify-center">
-                    <span className="bg-background px-2 text-xs text-muted-foreground">or</span>
-                  </div>
-                </div>
-                <button className="text-center text-sm text-primary hover:underline">
-                  Sign up with your email address
-                </button>
-              </div>
-            </DialogContent>
-          </Dialog>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Link href="/profile" className="w-full">My Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/orders" className="w-full">My Orders</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/wallet" className="w-full">My Wallet</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button
+              variant="outline"
+              className="h-8 rounded-full border-primary/70 text-white hover:bg-primary/20 md:block hidden"
+              onClick={() => setIsLoginModalOpen(true)}
+            >
+              登入
+            </Button>
+          )}
 
           {/* Mobile Menu Button */}
           <button
@@ -199,17 +211,44 @@ export default function Header() {
               {item.label}
             </Link>
           ))}
-          <Button
-            className="mt-2 w-full"
-            onClick={() => {
-              setIsLoginOpen(true);
-              setIsMobileMenuOpen(false);
-            }}
-          >
-            登入
-          </Button>
+          {currentUser ? (
+            <>
+              <Link
+                href="/profile"
+                className="text-lg font-medium text-white transition-colors hover:text-primary"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                My Profile
+              </Link>
+              <Button
+                className="mt-2 w-full"
+                onClick={() => {
+                  handleLogout();
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <Button
+              className="mt-2 w-full"
+              onClick={() => {
+                setIsLoginModalOpen(true);
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              登入
+            </Button>
+          )}
         </nav>
       </div>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </header>
   );
 }

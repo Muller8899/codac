@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { Toaster } from "sonner";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export default function ClientBody({
   children,
@@ -15,7 +17,10 @@ export default function ClientBody({
 
   return (
     <body className="antialiased" suppressHydrationWarning>
-      {children}
+      <AuthProvider>
+        {children}
+        <Toaster position="top-center" richColors />
+      </AuthProvider>
     </body>
   );
 }
