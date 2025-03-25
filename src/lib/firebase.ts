@@ -6,7 +6,7 @@ import { getFirestore } from "firebase/firestore";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCsbAfX5mLgYNUy7LVfWx6q73TUck2hR7U",
-  authDomain: "codab-82c80.firebaseapp.com",
+  authDomain: "codac-lyart.vercel.app",
   projectId: "codab-82c80",
   storageBucket: "codab-82c80.firebasestorage.app",
   messagingSenderId: "807016501235",
